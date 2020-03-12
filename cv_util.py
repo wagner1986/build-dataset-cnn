@@ -72,7 +72,10 @@ class UtilCV:
 
 
                         if self.can_write:
-                            cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, num_frames_std, '.png'),
+                            dateTimeObj = datetime.now()
+                            timeStr = dateTimeObj.strftime("%H%M%S")
+                            temp_name=str(num_frames_std)+"_"+timeStr
+                            cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.png'),
                                         last_frame)
                             #print("Grava Frame")
 
