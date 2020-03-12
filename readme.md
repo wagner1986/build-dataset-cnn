@@ -30,7 +30,7 @@ movimente as que desejamos utilizar na fase de treinamento para a pasta "/images
 
 |Etapa 2 - OpenLabeling  | 
 | --- | 
-|Construiremos uma caixa envolvente para cada objeto para visando gerar o conjuto de treinamento desejado |
+|Construiremos uma caixa envolvente para cada objeto, visando gerar o conjuto de treinamento desejado |
 
 Baseado no repositorio: https://github.com/Cartucho/OpenLabeling
  
@@ -56,7 +56,7 @@ Para iniciar essa etapa execute no terminal:
 python run.py --format='voc' --sort
 ~~~ 
 
-formarto gerardo com o app, é o do yolo:
+O formarto gerardo com o app, é o do yolo:
 
 | box | class|
 | --- | --- |
@@ -65,7 +65,7 @@ formarto gerardo com o app, é o do yolo:
 402 357 449 442 | 0
 
 
-Para finalizar o processo devemos executar o comando abaixo:
+Para finalizar o processo devemos executar o comando abaixo, para transformar no formato da nossa rede:
 
 ~~~ shell command
 python process.py
