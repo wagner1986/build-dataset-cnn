@@ -3,11 +3,17 @@
 | --- | 
 |Salva as imagens diferentes durante a gravação do videos|
 
-Para inicia o processo devemos excutar os seguintes comandos no terminal:
+Primeiramente execute o comando pelo terminal dentro da pasta desejada, para baixar o projeto:
 ~~~ shell command
-1. conda env list               (deve aparecer o ambiente condor37 listado)
-2. conda activate condor37          
-3. python cv_util.py
+git clone https://github.com/wagner1986/build-dataset-cnn.git
+~~~
+
+Entre na pasta do projeto e  execute os seguintes comandos no terminal:
+~~~ shell command
+cd build-dataset-cnn
+conda env list               (deve aparecer o ambiente condor37 listado)
+conda activate condor37          
+python cv_util.py
 ~~~
 
 Abrirá 2 janelas para visualizar o que esta sendo gravado, favor deixar somente uma câmera conectada ao PC.
