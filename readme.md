@@ -17,7 +17,7 @@ Abrirá 2 janelas para visualizar o que esta sendo gravado, favor deixar somente
 sem a mão do operador no kit.
 
 - Após a Captura do processo de montagem dos Kits , teremos todas as imagens na pasta "/data/seg", 
-movimente as desejamos utilizar na fase de treinamento para a pasta "/images".
+movimente as que desejamos utilizar na fase de treinamento para a pasta "/images".
 
 - Observe se o conjunto de imagens captura representa todos os momentos que desejamos identificar algo.
 
