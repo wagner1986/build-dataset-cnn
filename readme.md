@@ -1,7 +1,7 @@
 
 |Etapa 1 - Captura da montagem  | 
 | --- | 
-||
+|Salva as imagens diferentes durante a gravação do videos|
 
 Para inicia o processo devemos excutar os seguintes comandos no terminal:
 ~~~ shell command
