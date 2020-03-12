@@ -1,0 +1,13 @@
+caixa
+spark
+bateria
+carregador
+adptador
+cabo
+pendrive
+bandeja
+maleta
+coldre
+manual
+alvo
+cartucho
