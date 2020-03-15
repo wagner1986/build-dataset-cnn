@@ -9,17 +9,17 @@ import numpy as np
 class UtilCV:
     min_frame_std = 0
 
-    def __init__(self, destiny="", percent=50, can_show=False, can_write=False):
+    def __init__(self, destiny="", percent=100, can_show=False, can_write=False):
         self.percent = percent
         self.destiny = destiny
         self.can_show = can_show
         self.can_write = can_write
 
-    def define_dimension(self, frame):
-        height, width, depth = frame.shape
-        img_scale = (self.percent * 10.) / width
-        new_x, new_y = frame.shape[1] * img_scale, frame.shape[0] * img_scale
-        return new_x, new_y
+    def rescale_frame(self, frame, percent=75):
+        width = int(frame.shape[1] * percent / 100)
+        height = int(frame.shape[0] * percent / 100)
+        dim = (width, height)
+        return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
     def join_images(self, img1, img2):
         new_img = np.hstack((img1, img2))
@@ -36,26 +36,27 @@ class UtilCV:
         last_status = None
         frames_stoped = []
 
-        if os.path.isfile(file_name) or file_name in (0,1) :
+        if os.path.isfile(file_name) or file_name in (0, 1):
             cap = cv2.VideoCapture(file_name)
 
+            cap.set(cv2.CAP_PROP_FPS, 15)
+
             ret, last_frame = cap.read()
-            #print('isOpened ', cap.isOpened())
+            print('print 1 ', ret, last_frame.shape)
             if last_frame is None:
                 print('last_frame ', last_frame)
                 exit()
 
-            new_x, new_y = self.define_dimension(last_frame)
-            last_frame = cv2.resize(last_frame, (int(new_x), int(new_y)))
-            last_frame_norm = self.normalize_blur(last_frame)
 
+            last_frame = self.rescale_frame(last_frame, percent=100)
+            last_frame_norm = self.normalize_blur(last_frame)
             status_motion = "STOP"
             while cap.isOpened():
                 ret, frame = cap.read()
                 if frame is None:
                     break
 
-                frame = cv2.resize(frame, (int(new_x), int(new_y)))
+                frame = self.rescale_frame(frame, percent=100)
                 newFrame = self.normalize_blur(frame)
 
                 diff = cv2.absdiff(last_frame_norm, newFrame)
@@ -70,28 +71,29 @@ class UtilCV:
                         num_frames_std = num_frames_std + 1
                         frames_stoped.append(last_frame)
 
-
                         if self.can_write:
                             dateTimeObj = datetime.now()
                             timeStr = dateTimeObj.strftime("%H%M%S")
-                            temp_name=str(num_frames_std)+"_"+timeStr
+                            temp_name = str(num_frames_std) + "_" + timeStr
                             cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.png'),
                                         last_frame)
-                            #print("Grava Frame")
+                            # print("Grava Frame")
 
                     current_frame = 0
 
                 if last_status != status_motion:
                     last_status = status_motion
 
-                #print("current_frame", current_frame, " status_motion ", status_motion)
+                # print("current_frame", current_frame, " status_motion ", status_motion)
 
                 # atualiza frame
                 last_frame_norm = newFrame.copy()
                 last_frame = frame.copy()
+                fps = cap.get(cv2.CAP_PROP_FPS)
                 if self.can_show:
                     # escreve msg na tela
-                    cv2.putText(frame, "Room Status: {}; Number frames stopped: {}".format(status_motion, num_frames_std),
+                    cv2.putText(frame,
+                                "Room Status: {}; Number frames stopped: {} FPS:{}".format(status_motion, num_frames_std,fps),
                                 (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                     cv2.putText(frame, datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 255, 0), 1)
@@ -118,6 +120,6 @@ if __name__ == '__main__':
     print(path_project)
     path_project = "{}{}{}{}".format(path_project, os.sep, "data", os.sep)
     print(path_project)
-    util = UtilCV(destiny=path_project, can_write=True,can_show=True)
-    #video1 = path_project + "kit1.mp4"
-    list1 = util.segment_movement_video(file_name = 0)
+    util = UtilCV(destiny=path_project, can_write=True, can_show=True)
+    # video1 = path_project + "kit1.mp4"
+    list1 = util.segment_movement_video(file_name=0)
