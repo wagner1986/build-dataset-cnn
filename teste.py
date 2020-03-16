@@ -18,7 +18,7 @@ def change_res(width, height):
     cap.set(3, width)
     cap.set(4, height)
 
-make_720p()
+make_1080p()
 #change_res(128, 72)
 
 

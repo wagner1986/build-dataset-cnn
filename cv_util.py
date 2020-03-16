@@ -30,11 +30,11 @@ class UtilCV:
         gray = cv2.GaussianBlur(gray, (25, 25), 0)
         return gray
 
-    def segment_movement_video(self, file_name=0):
+    def segment_movement_video(self, file_name=0,filename_out="output.avi"):
         current_frame = 0
         num_frames_std = 0
         last_status = None
-        frames_stoped = []
+
 
         if os.path.isfile(file_name) or file_name in (0, 1):
             cap = cv2.VideoCapture(file_name)
@@ -47,10 +47,18 @@ class UtilCV:
                 print('last_frame ', last_frame)
                 exit()
 
+            filename_out='{}{}seg{}{}'.format(self.destiny, os.sep, os.sep, filename_out)
 
             last_frame = self.rescale_frame(last_frame, percent=100)
+
             last_frame_norm = self.normalize_blur(last_frame)
             status_motion = "STOP"
+
+            frame_height = last_frame.shape[0]
+            frame_width = last_frame.shape[1]
+            out = cv2.VideoWriter(filename_out, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10,
+                                  (frame_width,frame_height))
+
             while cap.isOpened():
                 ret, frame = cap.read()
                 if frame is None:
@@ -58,6 +66,7 @@ class UtilCV:
 
                 frame = self.rescale_frame(frame, percent=100)
                 newFrame = self.normalize_blur(frame)
+                out.write(frame)
 
                 diff = cv2.absdiff(last_frame_norm, newFrame)
 
@@ -65,11 +74,17 @@ class UtilCV:
                 if media_de_cor < 0.8:
                     status_motion = "STOP"
                     current_frame = current_frame + 1
+                    if self.can_write:
+                        dateTimeObj = datetime.now()
+                        timeStr = dateTimeObj.strftime("%H%M%S")
+                        temp_name = str(num_frames_std) + "_" + timeStr
+                        cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.png'),
+                                    last_frame)
                 else:
                     status_motion = "MOTION"
                     if current_frame > self.min_frame_std:
                         num_frames_std = num_frames_std + 1
-                        frames_stoped.append(last_frame)
+                        """
 
                         if self.can_write:
                             dateTimeObj = datetime.now()
@@ -77,6 +92,7 @@ class UtilCV:
                             temp_name = str(num_frames_std) + "_" + timeStr
                             cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.png'),
                                         last_frame)
+                        ="""
                             # print("Grava Frame")
 
                     current_frame = 0
@@ -110,7 +126,7 @@ class UtilCV:
             cv2.destroyAllWindows()
         else:
             print("video não existe")
-        return frames_stoped
+        return 0
 
 
 if __name__ == '__main__':
@@ -122,4 +138,6 @@ if __name__ == '__main__':
     print(path_project)
     util = UtilCV(destiny=path_project, can_write=True, can_show=True)
     # video1 = path_project + "kit1.mp4"
-    list1 = util.segment_movement_video(file_name=0)
+    dateTimeObj = datetime.now()
+    timeStr = dateTimeObj.strftime("%H%M%S")+".avi"
+    util.segment_movement_video(file_name=0,filename_out=timeStr)
