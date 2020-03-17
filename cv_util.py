@@ -5,6 +5,7 @@ from os.path import dirname
 import cv2
 import numpy as np
 
+import config as cfg
 
 class UtilCV:
     min_frame_std = 0
@@ -39,7 +40,8 @@ class UtilCV:
         if os.path.isfile(file_name) or file_name in (0, 1):
             cap = cv2.VideoCapture(file_name)
 
-            cap.set(cv2.CAP_PROP_FPS, 15)
+            for config in cfg.input['camera_box_config']:
+                cap.set(config['id'], config['value'])
 
             ret, last_frame = cap.read()
             print('print 1 ', ret, last_frame.shape)
@@ -140,4 +142,4 @@ if __name__ == '__main__':
     # video1 = path_project + "kit1.mp4"
     dateTimeObj = datetime.now()
     timeStr = dateTimeObj.strftime("%H%M%S")+".avi"
-    util.segment_movement_video(file_name=0,filename_out=timeStr)
+    util.segment_movement_video(file_name=cfg.input['file_name'],filename_out=timeStr)
