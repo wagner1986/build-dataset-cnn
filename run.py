@@ -96,7 +96,7 @@ def draw_line(img, x, y, height, width, color):
 def yolo_format(class_index, point_1, point_2, width, height):
     # YOLO wants everything normalized
     # Order: class x_center y_center x_width y_height
-    '''
+
     x_center = (point_1[0] + point_2[0]) / float(2.0 * width)
     y_center = (point_1[1] + point_2[1]) / float(2.0 * height)
     x_width = float(abs(point_2[0] - point_1[0])) / width
@@ -106,9 +106,12 @@ def yolo_format(class_index, point_1, point_2, width, height):
     y_center = (point_1[1] + point_2[1]) / float(2.0)
     x_width = float(abs(point_2[0] - point_1[0]))
     y_height = float(abs(point_2[1] - point_1[1]))
+    
     print(str(point_1)+" "+str(point_2)+" "+str(width)+" "+ str(height))
     print( str(class_index) + " " + str(x_center) \
        + " " + str(y_center) + " " + str(x_width) + " " + str(y_height))
+       
+    '''
     return str(class_index) + " " + str(x_center) \
        + " " + str(y_center) + " " + str(x_width) + " " + str(y_height)
 
