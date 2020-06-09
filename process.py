@@ -72,6 +72,7 @@ def separa_foto_das_classes(line):
 if __name__ == '__main__':
     convert_yolo(images_path="images", labels_path="bbox_txt", class_file="class_list.txt",filename_out="condor_train_data_yolo.txt")
 
+
     # Using readlines()
     file1 = open('condor_train_data_yolo.txt', 'r')
     lines = file1.readlines()

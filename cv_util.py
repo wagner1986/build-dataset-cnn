@@ -80,7 +80,7 @@ class UtilCV:
                         dateTimeObj = datetime.now()
                         timeStr = dateTimeObj.strftime("%H%M%S")
                         temp_name = str(num_frames_std) + "_" + timeStr
-                        cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.png'),
+                        cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.jpg'),
                                     last_frame)
                 else:
                     status_motion = "MOTION"
@@ -92,7 +92,7 @@ class UtilCV:
                             dateTimeObj = datetime.now()
                             timeStr = dateTimeObj.strftime("%H%M%S")
                             temp_name = str(num_frames_std) + "_" + timeStr
-                            cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.png'),
+                            cv2.imwrite('{}{}seg{}{}{}'.format(self.destiny, os.sep, os.sep, temp_name, '.jpg'),
                                         last_frame)
                         ="""
                             # print("Grava Frame")
